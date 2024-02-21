@@ -7,14 +7,30 @@ let prodQuant = document.querySelector("#prodQuant");
 let prodImg = document.querySelector("#prodImg");
 let productList = document.querySelector("#productsList");
 let submitButton = document.querySelector("#prodSubmit");
+let clearProductsBtn = document.querySelector("#clearProductsBtn");
 let products = JSON.parse(localStorage.getItem("Products")) || [];
+
+function rmvProducts(){
+    if(products.length == 0){
+        alert("There is no products to delete!");
+    }
+    else{
+        let r = confirm("Are you sure to delete this item?");
+    if (r == true) {
+        products.splice(0, products.length);
+        localStorage.setItem("Products", JSON.stringify(products));
+        alert("Deleted Successfully!");
+        printProd();
+    }
+    }
+}
 
 function addProd() {
     let valid = true;
-    if(prodName.value == "" || prodPrice.value == "" || prodQuant.value == "" || prodImg.value == ""){
+    if(prodName.value == "" || prodPrice.value == "" || prodQuant.value == "" || prodImg.value == "" || isNaN(prodPrice.value) || isNaN(prodQuant.value) || isNaN(prodTaxes.value) || isNaN(prodTotal.value)){
         valid = false;
     }
-    console.log(valid);
+    
     if (valid){
     let product = {
         name: prodName.value,
@@ -32,6 +48,7 @@ function addProd() {
     }
     else{
         alert("Please Check the data entered!");
+        clearInputs();
     }
 }
 function clearInputs(){
